@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Touch-Hologram</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width maximum-scale=1 minimum-scale=1 initial-scale=1 user-scalable=no"/>
+		<style type="text/css">
+			body{
+				margin:0;
+				padding:0;
+				width:100%;
+				background-color:#000;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body ontouchmove="event.preventDefault();">
+		<script src="../node_modules/three/build/three.min.js"></script>
+        <script src="../node_modules/three/examples/js/libs/inflate.min.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/FBXLoader.js"></script>
+		<script src="js/hologram_v2.0.js"></script>
+		<script src="js/touchcontrols.js"></script>
+	</body>
+</html>
