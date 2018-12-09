@@ -1,6 +1,8 @@
 //定义宽高
-var width = window.outerWidth;
-var height = window.outerHeight;
+var width = window.innerWidth;
+var height = window.innerHeight;
+//初始化需要旋转和缩放的模型类数组
+var rotateTypeArr=[],scaleTypeArr=[];
 
 //定义场景
 var scene;
@@ -8,20 +10,6 @@ var init_scene = function(){
 	scene = new THREE.Scene();
 }
 init_scene();
-
-//定义摄像机
-var angle = 75;    //镜头广角
-var ratio = 1;    //镜头宽高比
-var nearest = 0.1;  //镜头看到的最近距离
-var farthest = 1000.0;  //镜头看到的最远距离
-var camera;
-var init_camera = function(){
-	camera = new THREE.PerspectiveCamera(angle,ratio,nearest,farthest);
-	camera.position.z= 250;
-	camera.up = new THREE.Vector3(0.0,1.0,0.0);
-	camera.lookAt(scene.position);
-}
-init_camera();
 
 //定义光照
 var ambientlight, directionallight;
@@ -43,12 +31,13 @@ var init_renderer = function(){
 	renderer.setSize(renderer_width,renderer_height,false);
 	var canvas = renderer.domElement;
 	canvas.style.position = 'absolute';
+	canvas.style.width = renderer_width+'px';
 	if(width>height){
 		canvas.style.left = (width-renderer_width)/2+'px';
 	}else{
 		canvas.style.top = (height-renderer_height)/2+'px';
 	}
-	document.body.append(canvas);
+	document.body.appendChild(canvas);
 }
 init_renderer();
 
@@ -60,6 +49,8 @@ var init_models = function(){
 		var loader = new THREE.FBXLoader();
 		loader.load(fbx,function(model){
 			model.receiveShadow = true;
+			rotateTypeArr.push(model.rotation) ;
+			scaleTypeArr.push(model.scale.x);
 			scene.add(model);
 			model_arr.push(model);
 		});
@@ -95,6 +86,8 @@ var views=[front_view,left_view,back_view,right_view];
 //定义播放
 var rotateSpeed = 0.01;
 var update = function(){
+	if(touchDown)
+		return;
 	model_arr.forEach(function(model){
 		model.rotation.y += rotateSpeed;
 	})
